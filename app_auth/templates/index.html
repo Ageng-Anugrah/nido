@@ -1,0 +1,28 @@
+<html><body>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+  var data = {
+    jwtToken: "{{ jwt_token }}",
+  };
+  function sendLoginData(event) {
+        // For Chrome, the origin property is in the event.originalEvent object.
+        var origin = event.origin || event.originalEvent.origin;
+        var allowedDomain = 'http://pmb.cs.ui.ac.id';
+        var allowedStgDomain = 'http://pmb-stg.herokuapp.com';
+        var allowedSecureStgDomain = 'https://pmb-stg.herokuapp.com';
+        var allowedLocalDomain = 'http://localhost:3000';
+        // MAKE SURE FUNCTION CALLER ORIGIN IS FROM ALLOWED DOMAIN! SECURITY PURPOSES.
+        // DELETE ALLOWEDLOCALDOMAIN UPON PRODUCTION (TAR AJA KALO DAH DEPLOY)
+        //if (origin === allowedDomain || origin === allowedStgDomain || origin === allowedSecureStgDomain || origin === allowedLocalDomain) {
+        // call postMessage function from the window caller
+        event.source.postMessage(data, origin);
+        // close window
+        window.close();
+        //}
+  }
+
+// receive any postmessage to catch the caller window and send the data to there
+window.addEventListener('message', sendLoginData);
+</script>
+</body>
+</html>
